@@ -1,50 +1,36 @@
 import networkx as nx
 import matplotlib.pyplot as plt
+from operator import itemgetter
 from solutions_treat import *
 
-def kmst_backtrack(k,T,V,E):
-    if is_viable(k,T,V,E):        
-        if is_solution(k,T):
-            store(T)
-        else:            
-            for i in range(0,len(E)):
-                if not V or E[i][0] in V or E[i][1] in V:
-                    T2=list(T)
-                    E2=list(E)
-                    V2=dict(V)
-                    V2[E[i][0]]=True
-                    V2[E[i][1]]=True
-                    T2.append(E2.pop(i))            
-                    kmst_backtrack(k-1,T2,V2,E2)
 
-def is_viable(k,T,V,E):    
-    G=nx.Graph()
-    G.add_edges_from(T)
-    try:
-        nx.find_cycle(G)
-        #print("no cycle found")
-        return False
-    except:
-        #print("cycle found")
-        return True
+P_memo=dict([])
+def P(G,u,l):
+    global P_memo
+    if u in P_memo:
+        if l in P_memo[u]:
+            return P_memo[u][l]
+    else:
+        P_memo[u]=dict([])
+    r=0    
+    for v in G[u]:
+        r+=G[u][v]['weight']
+        if l>1:
+            r+=P(G,v,l-1)
+    P_memo[u][l]=r*l
+    return P_memo[u][l]
 
-def is_solution(k,T):
-    return k==1
-
-def store(T):
-    global solutions
-    #r=0
-    #print(T)
-    #for i in range(0,len(T)-1):        
-    #   r+=G[T[i]][T[i+1]]['weight']                        
-    solutions.append(T)
-    
 def kmst(G,k):
     T=[]
-    V=dict([])
-    E=G.edges()    
-    kmst_backtrack(k+1,T,V,E)
-        
+    search_level=3
+    for v in G.nodes():
+        P(G,v,search_level)
+    #print(P_memo)
+    P_sorted_v=list(map(lambda x:x[0],sorted(P_memo.items(),key=lambda x:x[1][search_level])))
+    print(P_sorted_v)
+    #sorted(,key=lambda el:el[1])
+    #kmst_backtrack(k+1,T,V,E)
+
 solutions=[]
 
 def test_kmst():
@@ -70,7 +56,7 @@ def test_kmst():
         plt.show()
         #print(sorted(solutions,key=lambda el:el[1])) #print asc sorted solutions
     except(TypeError,IndexError):
-        print("Algum erro ocorreu ou não há solução.")
+        print("Algum erro ocorreu ou não há solução armazenada.")
 
 test_kmst()
     
