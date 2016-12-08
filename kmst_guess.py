@@ -11,12 +11,15 @@ def P(G,u,l):
             return P_memo[u][l]
     else:
         P_memo[u]=dict([])
-    r=0    
-    for v in G[u]:
-        r+=G[u][v]['weight']
-        if l>1:
-            r+=P(G,v,l-1)
-    P_memo[u][l]=r*l
+    r=0
+    if l==0:
+        r=0
+    else:
+        for v in G[u]:        
+            if l>0:
+                r+=G[u][v]['weight']*l
+                r+=P(G,v,l-1)        
+    P_memo[u][l]=r
     return P_memo[u][l]
 
 def first_viable_solution(G,V,k):
