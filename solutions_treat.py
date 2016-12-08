@@ -1,3 +1,6 @@
+solutions=[]
+solution_weight=float("inf")
+
 def get_weighted_solutions(G,solutions):
     weighted_solutions=[]
     for s in solutions:
