@@ -3,13 +3,16 @@ import matplotlib.pyplot as plt
 from solutions_treat import *
 
 def kmst_branchbound(G,k,T,V,E):
-    global solution_weight  
-    if is_viable(k,T,V):        
+    global solution_weight
+    print(solution_weight)
+    if is_viable(k,T,V):
         if is_solution(k,T):
             choose_best_solution(G,T)
         else:
             lower_bound_T=lower_bound(G,k,T)            
+            
             if lower_bound_T<solution_weight or solution_weight==float("inf"):                
+                print("got here")
                 for i in range(0,len(E)):
                     if not V or E[i][0] in V or E[i][1] in V:
                         T2=list(T)
