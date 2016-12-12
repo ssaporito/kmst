@@ -1,6 +1,3 @@
-solutions=[]
-solution_weight=float("inf")
-
 def get_weighted_solutions(G,solutions):
     weighted_solutions=[]
     for s in solutions:
@@ -23,3 +20,13 @@ def minimum_solution(solutions):
             min_val=solutions[i][1]
             min_i=i
     return solutions[min_i]
+
+def print_results(solutions,start,end,tries,G):
+    if len(solutions)>0:
+        average_time=(end-start)*1000/tries
+        min_solution=minimum_solution(get_weighted_solutions(G,solutions))    
+        print("Time taken:"+str(average_time)+"ms")    
+        print(solutions)    
+        print("Min:"+str(min_solution[1]))        
+    else:
+        print("No solution found.")

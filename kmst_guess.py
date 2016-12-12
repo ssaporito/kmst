@@ -59,11 +59,10 @@ def first_viable_solution(G,V,k):
         V_removal=[]    
     
 
-def kmst_guess(G,k):
+def kmst_guess(G,k,solutions):
     if k>G.number_of_nodes():
         print("k must be lower than |V|")
         return False
-    global solutions
     search_level=k
     for v in G.nodes():
         P(G,v,search_level)
